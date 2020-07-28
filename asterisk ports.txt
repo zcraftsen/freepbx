@@ -1,0 +1,9 @@
+# netstat -plunt |grep asterisk
+tcp        0      0 0.0.0.0:2000                0.0.0.0:*                   LISTEN      444/asterisk
+tcp        0      0 0.0.0.0:1720                0.0.0.0:*                   LISTEN      444/asterisk
+tcp        0      0 0.0.0.0:5038                0.0.0.0:*                   LISTEN      444/asterisk
+udp        0      0 0.0.0.0:5060                0.0.0.0:*                               444/asterisk
+udp        0      0 0.0.0.0:4569                0.0.0.0:*                               444/asterisk
+udp        0      0 0.0.0.0:5000                0.0.0.0:*                               444/asterisk
+udp        0      0 0.0.0.0:2727                0.0.0.0:*                               444/asterisk
+udp        0      0 0.0.0.0:4520                0.0.0.0:*                               444/asterisk

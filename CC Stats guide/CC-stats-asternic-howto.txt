@@ -1,0 +1,117 @@
+##### Guide for CC Stats Asternic + PHP pages
+##### Draft created by TTJ v1.0
+
+##### if you don't know mysql root password and cannot login into it
+##### reset root password of mysql (because we cannot login to it and we don't know the password)
+/etc/init.d/mysqld stop && mysqld_safe --skip-grant-tables &
+##### and then wait the process to finish
+/etc/init.d/mysqld start
+mysql -uroot -pvizazfr4nse
+##### or vizfr@#$@
+##### or tlsqlrootpwd1
+
+##### continue reset root password in mysql command
+mysql
+##### put the SQL commands below
+#use mysql;
+#delete from user where User='root';
+#select PASSWORD('vizazfr4nse');
+#insert into `user` VALUES('localhost','root','*354DE7B384398CB118346E920770FF1B65C1CA94','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','','','','',0,0,0,0);
+#exit
+##### restart mysql to apply new password
+/etc/init.d/mysqld restart
+
+##### download package and install
+cd /usr/src
+wget http://download.asternic.net/asternic-stats-1.5.tgz
+tar zxvf asternic-stats-1.5.tgz
+cd asternic-stats
+##### warning, put mysql password below
+mysqladmin -u root -p create qstats
+##### warning, put mysql password below
+mysql -u root -p qstats < sql/qstats.sql
+
+##### edit asternic config
+vim /usr/src/asternic-stats/html/config.php
+#// Credentials for MYSQL database
+#$dbhost = 'localhost';
+#$dbname = 'qstatslite';
+#$dbuser = 'root';
+#$dbpass = 'vizazfr4nse';
+#// See /etc/asterisk/manager.conf (check what is the username and password there and then follow it into this file)
+#$manager_host   = "127.0.0.1";
+#$manager_user   = "admin";
+#$manager_secret = "amp111"
+
+##### edit parselog config
+vim /usr/src/asternic-stats/parselog/config.php
+##### Please check what is your asterisk log path in /etc/asterisk/asterisk.conf
+#$queue_log_dir  = '/data/asterisk/log';
+#$queue_log_file = 'queue_log'
+
+#$dbhost = 'localhost';
+#$dbname = 'qstatslite';
+#$dbuser = 'root';
+#$dbpass = 'vizazfr4nse';
+
+##### move folder
+mv /usr/src/asternic-stats/html /var/www/html/queue-stats
+mv /usr/src/asternic-stats/parselog /usr/local
+
+##### transmit all the call file into queue.log
+##### callback -> PBX -> runing script -> generate .todo file with the call details and storage localy -> after the callback phone dialed -> remove it from the page and storage into todo-archived.zip file
+cd /data/asterisk/id2fr-queue2mail/
+unzip -n /data/asterisk/queue2mail/todo-archived -d /data/asterisk/queue2mail/unziped
+
+##### edit script in /data/asterisk/id2fr-queue2mail (this script is for asternic data)
+vim /data/asterisk/id2fr/queue2mail/callback-reporter.sh
+##### 1. make sure the path are all exist, or check if it's different, some pbx server having different setting, BE CAREFUL #####
+##### 2. change this line to match the folder you have unziped
+##### FILES=`find /data/asterisk/id2fr-queue2mail/unziped/data/asterisk/id2fr-queue2mail/ -maxdepth 1 -mtime 0 -type f | grep todo`
+##### 3. these lines --> change this |XX2XX| to like vn2ch is Vietnam to Switzerland (they are total 4 lines)
+##### 4. also change this --> for file in $FILES
+##### 5. copy the file into /data/asterisk/id2fr-queue2mail
+##### 6. Do the same for /data/asterisk/id2ch-queuemail (if you have more than 1 client for 1 call center)
+
+##### run script of callback-reporter for id2fr
+cd /data/asterisk/id2fr-queuemail
+chmod +x callback-reporter.sh 
+./callback-reporter.sh >> reporter.log &
+chown asterisk: /var/www/html -R 
+
+##### run script of callback-reporter for id2ch (if you have more than 1 client for 1 call center)
+cd /data/asterisk/id2ch-queuemail
+chmod +x callback-reporter.sh 
+./callback-reporter.sh >> reporter.log &
+chown asterisk: /var/www/html -R 
+
+
+##### WARNING: you can only do the command below after finish run script callback-reporter.sh on all of your clients, AND after CC operation finished
+php -q /usr/local/parselog/parselog.php convertlocal
+
+##### Open asternic page
+##### http://IP_ADDRESS/queue-stats
+
+##### edit callcenter-stats.sh (this script is for php / html statistic pages)
+##### NOTE: this script ONLY counting the *.todo files, some clients in SHA is counting /data/asterisk/xx2xx-queue2mail/mail/*.mail files
+vim /usr/local/asterisk/scripts/callcenter-stats.sh
+##### 1. make sure the path and webpath are all exist, some pbx server is different
+##### 2. check /etc/asterisk/extensions.ael what are the call reasons you have, some pbx sever having different setting, BE CAREFUL #####
+#####    e.g. APPT_TAKE or APPT-TAKE, CALLBACK or CALL-BACK or QUEUE or NOTHING, please check what you have 
+##### 3. please change the grep accordingly based on no.2 information 
+##### 4. read carefully the path, e.g. change id2fr according to your center
+##### 5. modify and copy index.php footer.php menu.php in /var/www/html/callback (be careful, if it's conflict with call center callback operation page for agent, then you will need to create /var/www/html/callback-stats (different PBX has different setting)
+##### 6. copy the callcenter-stats.sh into /usr/local/asterisk/scripts
+##### 7. change mode and run it
+chmod +x /usr/local/asterisk/scripts/callcenter-stats.sh
+cd /usr/local/asterisk/scripts
+./callcenter-stats.sh
+
+##### cron job for automatic daily generate reports
+vim /etc/crontab
+*/10 * * * * root unzip -n /data/asterisk/id2fr-queue2mail/todo-archived -d /data/asterisk/queue2mail/unziped
+*/10 * * * * root unzip -n /data/asterisk/id2ch-queue2mail/todo-archived -d /data/asterisk/vn2ch-queue2mail/unziped
+05 21 * * * root /data/asterisk/id2fr-queue2mail/callback-reporter.sh
+05 21 * * * root /data/asterisk/id2ch-queue2mail/callback-reporter.sh
+05 21 * * * root /usr/local/asterisk/scripts/callcenter-stats.sh
+10 21 * * * root php -q /usr/local/parselog/parselog.php convertlocal

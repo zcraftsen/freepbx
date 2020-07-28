@@ -1,0 +1,294 @@
+#!/bin/bash
+# Disable selinux
+echo -e "\n\033[5;4;47;34m Disable selinux \033[0m\n"
+sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
+sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
+setenforce 0
+
+# Update Your System
+echo -e "\n\033[5;4;47;34m Update Your System \033[0m\n"
+
+yum clean all
+yum -y update
+yum -y install ngrep
+yum -y install sngrep
+yum -y groupinstall core base "Development Tools"
+while [[ $(yum grouplist installed |grep "Development Tools"|wc -l) == "0" ]];do
+yum -y groupinstall core base "Development Tools"
+done
+
+
+# Add the Asterisk User
+echo -e "\n\033[5;4;47;34m  Add the Asterisk User \033[0m\n"
+
+adduser asterisk -m -c "Asterisk User"
+
+# Install Additional Required Dependencies
+echo -e "\n\033[5;4;47;34m  Install Additional Required Dependencies \033[0m\n"
+
+depend_pkg="lynx tftp-server unixODBC mysql-connector-odbc mariadb-server mariadb
+  httpd ncurses-devel sendmail sendmail-cf sox newt-devel libxml2-devel libtiff-devel
+  audiofile-devel gtk2-devel subversion kernel-devel git crontabs cronie
+  cronie-anacron wget vim uuid-devel sqlite-devel net-tools gnutls gnutls-devel python-devel texinfo
+  libuuid-devel libedit libedit-devel"
+
+max_tries=2
+try=$max_tries
+result="error"
+while (( try > 0 )) && [[ "$result" == 'error' ]]; do
+yum -y install $depend_pkg && result='ok' || result='error'
+if [[ "$result" == 'error' ]]; then
+yum list installed $depend_pkg
+fi
+try=$((try-1))
+done
+
+# Install php
+echo -e "\n\033[5;4;47;34m Install php \033[0m\n"
+
+yum remove -y php*
+php_pkg="php72w php72w-cli php72w-common php72w-pdo php72w-mysql php72w-mbstring
+ php72w-pear php72w-process php72w-xml php72w-opcache php72w-ldap php72w-intl php72w-soap"
+
+max_tries=2
+try=$max_tries
+result="error"
+while (( try > 0 )) && [[ "$result" == 'error' ]]; do
+yum install -y $php_pkg && result='ok' || result='error'
+if [[ "$result" == 'error' ]]; then
+yum list installed $php_pkg
+fi
+try=$((try-1))
+done
+
+# Install nodejs
+echo -e "\n\033[5;4;47;34m Install nodejs \033[0m\n"
+
+yum install -y nodejs
+while [[ $(yum list installed nodejs |grep nodejs|wc -l) == "0" ]];do
+yum install -y nodejs
+done
+
+# Enable and Start MariaDB
+systemctl enable mariadb.service
+systemctl start mariadb
+
+# initial database
+#; mysql_secure_installation --use-default
+echo -e "\n\033[5;4;47;34m initial database \033[0m\n"
+
+mysql -u root <<EOF
+UPDATE mysql.user SET authentication_string=PASSWORD('') WHERE User='root';
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DROP DATABASE IF EXISTS asterisk;
+DELETE FROM mysql.db WHERE Db='asterisk' OR Db='asterisk\\_%';
+FLUSH PRIVILEGES;
+EOF
+
+# Enable and Start Apache
+systemctl enable httpd.service
+systemctl start httpd.service
+
+# Install Legacy Pear requirements
+#pear install Console_Getopt
+
+# download packages
+echo -e "\n\033[5;4;47;34m download packages \033[0m\n"
+
+
+#wget -c https://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
+#wget -c https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
+wget -c https://github.com/meduketto/iksemel/archive/master.zip -O iksemel-master.zip
+wget -c -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.12.tar.gz
+wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
+wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
+# wget -c -O /tmp/pjproject-2.10.tar.bz2 https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/pjproject-2.10.tar.bz2
+# curl -l https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/MD5SUM.TXT > /tmp/test.txt
+
+# extracting
+#tar -zxvf dahdi-linux-complete-current.tar.gz
+#tar -zxvf libpri-current.tar.gz
+unzip iksemel-master.zip
+tar -zxvf jansson.tar.gz
+tar -zxvf asterisk-16-current.tar.gz
+tar -zxvf freepbx-15.0-latest.tgz
+
+# Install iksemel
+echo -e "\n\033[5;4;47;34m Install iksemel \033[0m\n"
+
+rm -f iksemel-master.zip
+cd iksemel-master
+./autogen.sh
+./configure
+make
+make install
+cd ..
+# install dahdi
+#echo -e "\n\033[5;4;47;34m install dahdi \033[0m\n"
+
+#rm -rf dahdi-linux-complete-current.tar.gz
+#cd dahdi-linux-complete-*
+#make all
+#make install
+#make config
+#cd ..
+# Building and Installing LibPRI
+#echo -e "\n\033[5;4;47;34m Building and Installing LibPRI \033[0m\n"
+
+#rm -rf libpri-current.tar.gz
+#cd libpri-*
+#make
+#make install
+#cd ..
+# Compile and Install jansson
+echo -e "\n\033[5;4;47;34m Compile and Install jansson \033[0m\n"
+
+rm -f jansson.tar.gz
+cd jansson-*
+autoreconf -i
+./configure --libdir=/usr/lib64
+make
+make install
+cd ..
+# Configuring Asterisk
+echo -e "\n\033[5;4;47;34m Configuring Asterisk \033[0m\n"
+
+rm -f asterisk-*-current.tar.gz
+cd asterisk-*
+contrib/scripts/get_mp3_source.sh
+contrib/scripts/install_prereq install
+./configure --with-pjproject-bundled --with-jansson-bundled  --with-iksemel
+make menuselect.makeopts
+menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
+## turn on 'format_mp3' and res_snmp module from Resource Modules. 
+## You will be prompted at the point to pick which modules to build. 
+## Most of them will already be enabled, but if you want to have MP3 support (eg, for Music on Hold),
+## you need to manually turn on 'format_mp3' on the first page.
+## After selecting 'Save & Exit' you can then continue
+# Building and Installing Asterisk
+make
+make install
+make config
+## Installing Sample Files
+#make samples
+## generate logfiles
+make install-logrotate
+ldconfig
+cd ..
+
+# Set Asterisk ownership permissions.
+echo -e "\n\033[5;4;47;34m Set Asterisk Permissions \033[0m\n"
+chown asterisk. /var/run/asterisk
+chown -R asterisk. /etc/asterisk
+chown -R asterisk. /var/{lib,log,spool}/asterisk
+chown -R asterisk. /var/spool/mqueue
+chown -R asterisk. /usr/{lib,lib64}/asterisk
+chown -R asterisk. /var/www/
+
+## A few small modifications to Apache.
+echo -e "\n\033[5;4;47;34m Some settings for Apache \033[0m\n"
+sed -i 's/\(^upload_max_filesize = \).*/\120M/' /etc/php.ini
+sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/httpd/conf/httpd.conf
+sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
+systemctl restart httpd.service
+
+# Install and Configure FreePBX
+echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
+
+rm -f freepbx-15.0-latest.tgz
+touch /etc/asterisk/{modules,cdr}.conf
+cd freepbx
+#sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
+#sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
+./start_asterisk start
+./install -n
+cd ..
+#; systemd startup script for FreePBX
+echo -e "\n\033[5;4;47;34m Systemd startup script for FreePBX \033[0m\n"
+
+cat> /etc/systemd/system/freepbx.service <<EOF
+[Unit]
+Description=FreePBX VoIP Server
+After=mariadb.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/fwconsole start -q
+ExecStop=/usr/sbin/fwconsole stop -q
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Startup freepbx
+systemctl daemon-reload
+systemctl enable freepbx.service
+systemctl start freepbx.service
+systemctl status -l freepbx.service
+
+# Verify asterisk
+systemctl status -l asterisk.service
+
+# Security Warning
+fwconsole ma refreshsignatures
+
+# Upgrade 
+fwconsole ma upgradeall
+fwconsole ma download certman
+fwconsole ma install certman
+
+# set permissions
+fwconsole chown
+
+# Reload services
+fwconsole reload
+
+# add Sound Codec G729
+echo -e "\n\033[5;4;47;34m  add Sound Codec G729 \033[0m\n"
+
+if [ -d /usr/lib/asterisk/modules ]; then
+cd /usr/lib/asterisk/modules/
+g729=$(ls /usr/lib/asterisk/modules/ |grep codec_g729.so |wc -l)
+g723=$(ls /usr/lib/asterisk/modules/ |grep codec_g723.so |wc -l)
+if [ $g729 == 0 -o $g723 == 0 ];
+then
+wget -c -O codec_g729.so http://asterisk.hosting.lv/bin/codec_g729-ast160-gcc4-glibc-x86_64-core2-sse4.so
+wget -c -O codec_g723.so http://asterisk.hosting.lv/bin/codec_g723-ast160-gcc4-glibc-x86_64-core2-sse4.so
+chmod 755 codec_g729.so
+chown asterisk:asterisk codec_g729.so
+chmod 755 codec_g723.so
+chown asterisk:asterisk codec_g723.so
+asterisk -rx "module reload codec_g729.so"
+asterisk -rx "module reload codec_g723.so"
+asterisk -rx "core show translation"
+echo -e "\n\033[5;4;47;34m  codec_g723 and codec_g729 is installed \033[0m\n"
+else
+echo -e "\n\033[5;4;47;34m  codec_g723 and codec_g729 already exists  \033[0m\n"
+fi
+fi
+# Load code g729 with asterisk 
+checkg729=$(grep -w "codec_g729.so" /etc/asterisk/modules.conf |wc -l)
+checkg723=$(grep -w "codec_g723.so" /etc/asterisk/modules.conf |wc -l)
+if [ $checkg729 == 0 -o $checkg723 == 0 ]; then
+sed -i '$i\load = codec_g729.so' /etc/asterisk/modules.conf
+sed -i '$i\load = codec_g723.so' /etc/asterisk/modules.conf
+echo -e "\n\033[5;4;47;34m  Load codec_g729 with asterisk  \033[0m\n"
+else 
+echo -e "\n\033[5;4;47;34m  codec_g729 already configured  \033[0m\n"
+fi
+
+# Restart services
+fwconsole restart
+
+# add firewalld 
+echo -e "\n\033[5;4;47;34m Firewalld settings \033[0m\n"
+
+firewall-cmd --permanent --zone=public --add-service={http,https}
+firewall-cmd --permanent --zone=public --add-port=5060-5061/tcp
+firewall-cmd --permanent --zone=public --add-port=5060-5061/udp
+firewall-cmd --permanent --zone=public --add-port=5067/udp
+firewall-cmd --permanent --zone=public --add-port=6000/udp
+firewall-cmd --permanent --zone=public --add-port=10000-20000/udp
+firewall-cmd --reload

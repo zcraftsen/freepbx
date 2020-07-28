@@ -1,0 +1,53 @@
+Directory Type: Microsoft Active Directory
+Directory Name: TLS.AD
+Enable Directory: Yes 
+Synchronize : 1 hour
+
+Directory Settings
+Secure Connection Type: None 
+Host(s): ld5dc01.tls.ad
+Port : 389
+Username : domainjoiner
+Password : <<password>>
+Domain :tls.ad
+Base DN : DC=tls, DC=ad
+Status :
+
+Operational Settings
+Create Missing Extensions : Don't care 
+Manage groups locally : No
+Common Name attribute :cn
+Description attribute : description
+Unique identifier attribute : objectGUID
+
+User configuration
+User DN : OU=Users,OU=TLSADMIN
+User object class : user
+User object filter : (objectCategory=Person)(sAMAccountName=*)(|(memberof=CN=gu.itops.adm, OU=Special, OU=Ad-hoc, DC=tls, DC=ad)(memberof=CN=gu.gsd.adm, OU=Special, OU=Ad-hoc, DC=tls, DC=ad))
+
+User name attribute : sAMAccountName
+User first name attribute: givenName
+User last name attribute : sn
+User display name attribute : displayName
+User group attribute : memberOf
+User email attribute : mail
+User Title attribute : 
+User Company attribute :
+User Department attribute :
+User Home Phone attribute : homephone
+User Work Phone attribute : telephoneNumber
+User Cell Phone attribute : mobile
+User Fax attribute : facsimileTelephoneNumber
+User extension Link attribute : ipphone
+
+Group configuration : 
+Group DN : ou=Special,ou=Ad-hoc  
+Group object class : group
+Group object filter : (objectCategory=Group)(|(CN=gu.itops.adm)(CN=gu.gsd.adm))
+Group members attribute : member
+
+Command Line:
+
+
+Manual Syncing
+fwconsole userman --syncall --force --verbose

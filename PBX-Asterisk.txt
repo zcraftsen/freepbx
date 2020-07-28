@@ -1,0 +1,216 @@
+# FreePBX  Asterisk
+
+PSTN -> GW 
+         |-> SIP trunk(5060)[CDR] 
+		        |-> PBX -> CC / Office
+                     |-> IAX trunk(4569)
+                    PBX (outbound)			  
+
+
+			 
+# Office 
+
+PBX (Inbound routes)[DIDs]
+|-> IVR -> TimeFrames |-> Working Time
+     |                |-> Out of office
+     |  -> Extensions
+
+	 
+	 
+# CC
+
+PBX (Outbound routes) -> outgoing calls
+    (Inbound routes)
+           |-> IVR         	
+                |-> TimeFrames  -> Emergency (YES - end calls)
+                                             (NO - Goto Holiday)
+                                -> Holiday (YES - end calls)
+                                           (NO - Goto Working hours)
+                                -> Working (YES - Goto Clients)
+                                           (NO - end calls)
+      								 |-> Clients (Answer/Call back)		   
+									 
+									 
+# Call Back Process
+greo todo to /data/asterisk/queue2mail
+
+Misc Applications -> Extensions 1901(call current number)
+                                1902(call reserved number)
+                                1903(call transfer number)
+                                1904(call other number)								
+								
+								
+				
+				
+				
+				
+				
+# Troubleshootings
+
+# iNode Full
+## Find which directory have many files
+
+for i in /*; do echo $i; find $i | wc -l; done
+
+## find the directory more than 10MB
+
+find / -type d -size +10M
+
+## remove the files aren't nessesary
+
+rm -rf 
+
+## Delete call-back queue
+
+for i in $(grep -l 03/13 /data/asterisk/queue2mail/kz2ch/*.todo); do mv $i /data/asterisk/queue2mail/kz2ch/backup/mar-13/; done
+
+for i in $(grep -l 03/17 /data/asterisk/queue2mail/ru2be/*.todo); do mv $i /data/asterisk/queue2mail/ru2be/backup/mar-17/; done
+
+
+# restart freepbx asterisk
+
+amportal restart
+
+# run script to restart
+/root/asterisk/script/ 
+asterisk-kill.pl
+asterisk-launch.pl
+
+Log files
+/data/asterisk/log/asterisk.launch
+                   full
+				   
+
+# Test Ext. 1020 1234Qq
+
+## Since the init script utilizes the safe_asterisk script, and by default wants to start Asterisk as the root user, we have to modify the safe_asterisk script telling it to run Asterisk as our non-root user. So open up the safe_asterisk script with your favorite text editor and look for the ASTARGS variable (around line 78). Then add -U asterisk between the quotes like so:
+
+vi /usr/sbin/safe_asterisk
+
+#
+# Don't fork when running "safely"
+#
+ASTARGS="-U asterisk"
+
+# service asterisk start
+# ps aux | grep asterisk
+
+503      30659  0.0  1.8  26036  8692 pts/2    Sl   15:07   0:00 
+/home/asterisk/asterisk-bin/sbin/asterisk -U asterisk -vvvg -c
+
+
+# Error: Trying to remove "sangoma-pbx", which is protected
+commented out the “sangoma-pbx” into the file:
+/etc/yum/protected.d/sangoma-pbx.conf
+
+
+## Connecting to the Voice Gateway by SIP
+Trunk Name: <<gwhostname>>
+
+PEER Details:
+
+username=<<username from gw>>
+type=friend
+secret=<<password>>
+host=<<gwipaddress>>
+qualify=yes
+
+Incoming Settings
+USER Context:<<context>>
+USER Details:
+
+type=user
+secret=<<password>>
+insecure=invite,port
+host=dynamic
+context=from-trunk
+
+Registration
+Register String: <<username from gw>>:<<password>>@<<gwipaddress>>
+
+
+
+
+## Connecting Two FreePBX/Asterisk Systems Together Over the Internet
+1. Configure an IAX2 Trunk on System1
+Access the Trunks Module on System1.  
+Click on the "Add Trunk" link at the top, right hand side of the screen in the Trunks Module.  
+Choose to create an IAX2 Trunk.
+Use these parameters in the Trunk Settings:
+Trunk Name:  System2
+Outbound Caller ID:  CallerID
+Dialed Number Manipulation Rules:  Usually Blank
+
+
+Trunk Name:  <<System2>>
+PEER Details:
+
+username=<<System1>>
+secret=<<password>>
+host=<<system2ipaddress>>
+type=friend
+context=from-internal
+qualify=yes
+qualifyfreqok=25000
+transfer=no
+trunk=yes
+forceencryption=yes
+encryption=yes
+auth=md5
+
+Registration String:  Blank.
+2.  Configure an Outbound Route on System1
+
+## Generic Configuration for Internet Telephone Service Providers using SIP protocol:
+Trunk Name:  ProviderA
+
+PEER Details:
+username=username
+fromuser=username
+secret=password
+host=provideraddress.com
+fromdomain=provideraddress.com
+type=peer
+context=from-trunk
+insecure=port,invite
+trustrpid=no
+sendrpid=yes
+directmedia=no
+qualify=yes
+keepalive=45
+nat=no
+dtmfmode=rfc2833
+disallow=all == allow=!all,ulaw
+#######################################
+disallow=all
+allow=alaw&ulaw&g726
+#######################################
+allow=alaw,ulaw
+allow=h263,g729
+########################################
+disallow=all
+allow=ulaw,alaw,g722,g729
+
+
+Registration String:  username:password@provideraddress.com
+
+## Configure Outbound routes 
+Route Position
+Where to insert this route or relocate it relative to the other routes.
+
+
+## Backup the Configuration
+# nano /tmp/folder.list
+/var/spool/asterisk
+/var/www
+/var/lib/asterisk
+/var/lib/munin
+/var/lib/mysql
+/var/lib/php5
+/etc/asterisk
+/etc/apache2
+/etc/munin
+/etc/mysql
+/etc/php5
+/usr/lib/asterisk
+/var/log/asterisk

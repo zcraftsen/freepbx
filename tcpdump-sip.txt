@@ -1,0 +1,11 @@
+Standard Tools
+The old school ways: 8 bits games, tcpdump
+Let's assume everyone knows tcpdump, the grandfather of packet capture tools and highlander of any unix system.
+tcpdump familiarity is definitely not an optional - when everything else fails, this good old friend won't let you down.
+Capturing SIP Packets with tcpdump:
+Display SIP packets with verbose details:
+# tcpdump -nqt -s 0 -A -vvv -i eth0 port 5060
+Capture SIP packets to disk in PCAP format:
+# tcpdump -nq -s 0 -i eth0 -w /tmp/dump.pcap port 5060
+Capture SIP packets to disk in PCAP format, rotate file every 15mb w/ file timestamp:
+# tcpdump -s 0 -w /tmp/capture-dep`date +%Y%m%d-%H%M%Z`.pcap -C15 udp and port 5060

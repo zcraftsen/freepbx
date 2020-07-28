@@ -1,0 +1,71 @@
+No repos specified, using: [standard] from last GUI settings
+
++----------------------+------------+----------------------------------------------+------------+
+| Module               | Version    | Status                                       | License    |
++----------------------+------------+----------------------------------------------+------------+
+| amd                  |            | Not Installed (Available online: 15.0.2)     | GPLv3+     |
+| announcement         |            | Not Installed (Available online: 15.0.3.10)  | GPLv3+     |
+| api                  |            | Not Installed (Available online: 15.0.3.7)   | AGPLv3+    |
+| asteriskinfo         |            | Not Installed (Available online: 15.0.10)    | GPLv3+     |
+| backup               |            | Not Installed (Available online: 15.0.10.24) | GPLv3+     |
+| blacklist            |            | Not Installed (Available online: 15.0.2.10)  | GPLv3+     |
+| builtin              |            | Enabled; Not available online                |            |
+| bulkhandler          |            | Not Installed (Available online: 13.0.19)    | GPLv3+     |
+| calendar             |            | Not Installed (Available online: 15.0.4.19)  | GPLv3+     |
+| callforward          |            | Not Installed (Available online: 15.0.10)    | AGPLv3+    |
+| callrecording        | 15.0.7.11  | Enabled and up to date                       | AGPLv3+    |
+| callwaiting          |            | Not Installed (Available online: 15.0.4.2)   | GPLv3+     |
+| cdr                  | 15.0.17.1  | Enabled and up to date                       | GPLv3+     |
+| cel                  |            | Not Installed (Available online: 15.0.15.8)  | GPLv3+     |
+| certman              | 15.0.25.3  | Enabled and up to date                       | AGPLv3+    |
+| cidlookup            |            | Not Installed (Available online: 15.0.17)    | GPLv3+     |
+| conferences          | 15.0.7.4   | Enabled and up to date                       | GPLv3+     |
+| contactmanager       |            | Not Installed (Available online: 15.0.8.23)  | GPLv3+     |
+| core                 | 15.0.12.16 | Enabled and up to date                       | GPLv3+     |
+| customappsreg        | 15.0.13    | Enabled and up to date                       | GPLv3+     |
+| cxpanel              |            | Not Installed (Available online: 15.0.4)     | GPLv3      |
+| dashboard            | 15.0.5     | Enabled and up to date                       | AGPLv3+    |
+| daynight             |            | Not Installed (Available online: 15.0.11)    | GPLv3+     |
+| digium_phones        |            | Not Installed (Available online: 15.0.2)     | GPLv2      |
+| digiumaddoninstaller |            | Not Installed (Available online: 13.0.1.1)   | GPLv2      |
+| directory            |            | Not Installed (Available online: 15.0.16)    | GPLv3+     |
+| donotdisturb         |            | Not Installed (Available online: 15.0.6)     | GPLv3+     |
+| fax                  |            | Not Installed (Available online: 15.0.19)    | GPLv3+     |
+| featurecodeadmin     | 13.0.6.4   | Enabled and up to date                       | GPLv3+     |
+| filestore            |            | Not Installed (Available online: 15.0.3.9)   | AGPLv3     |
+| findmefollow         |            | Not Installed (Available online: 15.0.22)    | GPLv3+     |
+| firewall             |            | Not Installed (Available online: 15.0.6.18)  | AGPLv3+    |
+| framework            | 15.0.16.65 | Enabled and up to date                       | GPLv2+     |
+| hotelwakeup          |            | Not Installed (Available online: 15.0.5.4)   | GPLv2      |
+| iaxsettings          |            | Not Installed (Available online: 15.0.6)     | AGPLv3     |
+| infoservices         | 15.0.2     | Enabled and up to date                       | GPLv2+     |
+| ivr                  |            | Not Installed (Available online: 15.0.26)    | GPLv3+     |
+| logfiles             | 13.0.10.8  | Enabled and up to date                       | GPLv3+     |
+| manager              |            | Not Installed (Available online: 15.0.9)     | GPLv2+     |
+| music                | 15.0.20    | Enabled and up to date                       | GPLv3+     |
+| outroutemsg          |            | Not Installed (Available online: 15.0.9)     | GPLv3+     |
+| paging               |            | Not Installed (Available online: 15.0.4.23)  | GPLv3+     |
+| parking              |            | Not Installed (Available online: 15.0.15.1)  | GPLv3+     |
+| pinsets              |            | Not Installed (Available online: 15.0.1.10)  | GPLv3+     |
+| pm2                  | 15.0.3.7   | Online upgrade available (15.0.3.8)          | AGPLv3+    |
+| presencestate        |            | Not Installed (Available online: 15.0.9)     | GPLv3+     |
+| printextensions      |            | Not Installed (Available online: 13.0.3.2)   | GPLv3+     |
+| queues               |            | Not Installed (Available online: 15.0.20)    | GPLv2+     |
+| recordings           | 15.0.3.13  | Enabled and up to date                       | GPLv3+     |
+| restapi              |            | Not Installed (Available online: 13.0.21.2)  | AGPLv3     |
+| ringgroups           |            | Not Installed (Available online: 15.0.11.8)  | GPLv3+     |
+| setcid               |            | Not Installed (Available online: 15.0.8)     | GPLv3+     |
+| sipsettings          | 15.0.6.27  | Enabled and up to date                       | AGPLv3+    |
+| sipstation           |            | Not Installed (Available online: 15.0.5.8)   | Commercial |
+| sms                  |            | Not Installed (Available online: 15.0.10)    | Commercial |
+| soundlang            | 15.0.5.7   | Enabled and up to date                       | GPLv3+     |
+| timeconditions       |            | Not Installed (Available online: 15.0.15.2)  | GPLv3+     |
+| ttsengines           |            | Not Installed (Available online: 15.0.4.6)   | AGPLv3     |
+| ucp                  |            | Not Installed (Available online: 15.0.6.17)  | AGPLv3+    |
+| userman              |            | Not Installed (Available online: 15.0.28)    | AGPLv3+    |
+| vmblast              |            | Not Installed (Available online: 15.0.11.4)  | GPLv3+     |
+| voicemail            | 15.0.18.15 | Enabled and up to date                       | GPLv3+     |
+| weakpasswords        |            | Not Installed (Available online: 13.0.2)     | GPLv3+     |
+| webrtc               |            | Not Installed (Available online: 15.0.8)     | GPLv3+     |
+| xmpp                 |            | Not Installed (Available online: 15.0.6.4)   | AGPLv3     |
++----------------------+------------+----------------------------------------------+------------+
