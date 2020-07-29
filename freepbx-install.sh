@@ -250,8 +250,16 @@ echo -e "\n\033[5;4;47;34m Firewalld settings \033[0m\n"
 
 firewall-cmd --permanent --zone=public --add-service={http,https}
 firewall-cmd --permanent --zone=public --add-port=5060-5061/tcp
+firewall-cmd --permanent --zone=public --add-port=5038/tcp
+firewall-cmd --permanent --zone=public --add-port=2000/tcp
+firewall-cmd --permanent --zone=public --add-port=8089/tcp
+firewall-cmd --permanent --zone=public --add-port=5067/tcp
+firewall-cmd --permanent --zone=public --add-port=4520/udp
+firewall-cmd --permanent --zone=public --add-port=4569/udp
+firewall-cmd --permanent --zone=public --add-port=5000/udp
 firewall-cmd --permanent --zone=public --add-port=5060-5061/udp
 firewall-cmd --permanent --zone=public --add-port=5067/udp
+firewall-cmd --permanent --zone=public --add-port=5160/udp
 firewall-cmd --permanent --zone=public --add-port=6000/udp
-firewall-cmd --permanent --zone=public --add-port=10000-20000/udp
+firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
 firewall-cmd --reload

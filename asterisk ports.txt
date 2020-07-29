@@ -1,9 +1,28 @@
-# netstat -plunt |grep asterisk
-tcp        0      0 0.0.0.0:2000                0.0.0.0:*                   LISTEN      444/asterisk
-tcp        0      0 0.0.0.0:1720                0.0.0.0:*                   LISTEN      444/asterisk
-tcp        0      0 0.0.0.0:5038                0.0.0.0:*                   LISTEN      444/asterisk
-udp        0      0 0.0.0.0:5060                0.0.0.0:*                               444/asterisk
-udp        0      0 0.0.0.0:4569                0.0.0.0:*                               444/asterisk
-udp        0      0 0.0.0.0:5000                0.0.0.0:*                               444/asterisk
-udp        0      0 0.0.0.0:2727                0.0.0.0:*                               444/asterisk
-udp        0      0 0.0.0.0:4520                0.0.0.0:*                               444/asterisk
+# netstat -plunt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      1576/mysqld
+tcp        0      0 0.0.0.0:5038            0.0.0.0:*               LISTEN      8816/asterisk
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      740/rpcbind
+tcp        0      0 0.0.0.0:2000            0.0.0.0:*               LISTEN      8816/asterisk
+tcp        0      0 0.0.0.0:13333           0.0.0.0:*               LISTEN      1649/sshd
+tcp        0      0 127.0.0.1:25            0.0.0.0:*               LISTEN      1366/sendmail: acce
+tcp        0      0 127.0.0.1:4573          0.0.0.0:*               LISTEN      8958/node /var/www/
+tcp6       0      0 :::5067                 :::*                    LISTEN      8816/asterisk
+tcp6       0      0 :::111                  :::*                    LISTEN      740/rpcbind
+tcp6       0      0 :::80                   :::*                    LISTEN      1163/httpd
+tcp6       0      0 :::13333                :::*                    LISTEN      1649/sshd
+tcp6       0      0 :::8089                 :::*                    LISTEN      8816/asterisk
+udp        0      0 0.0.0.0:33947           0.0.0.0:*                           8816/asterisk
+udp        0      0 0.0.0.0:111             0.0.0.0:*                           740/rpcbind
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           751/chronyd
+udp        0      0 0.0.0.0:4520            0.0.0.0:*                           8816/asterisk
+udp        0      0 0.0.0.0:4569            0.0.0.0:*                           8816/asterisk
+udp        0      0 0.0.0.0:5000            0.0.0.0:*                           8816/asterisk
+udp        0      0 0.0.0.0:906             0.0.0.0:*                           740/rpcbind
+udp        0      0 0.0.0.0:5060            0.0.0.0:*                           8816/asterisk
+udp        0      0 0.0.0.0:5061            0.0.0.0:*                           8816/asterisk
+udp6       0      0 :::48640                :::*                                8816/asterisk
+udp6       0      0 :::111                  :::*                                740/rpcbind
+udp6       0      0 ::1:323                 :::*                                751/chronyd
+udp6       0      0 :::906                  :::*                                740/rpcbind
