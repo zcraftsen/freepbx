@@ -101,7 +101,7 @@ echo -e "\n\033[5;4;47;34m download packages \033[0m\n"
 #wget -c https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
 wget -c https://github.com/meduketto/iksemel/archive/master.zip -O iksemel-master.zip
 wget -c -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.12.tar.gz
-wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
+wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-17-current.tar.gz
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
 # wget -c -O /tmp/pjproject-2.10.tar.bz2 https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/pjproject-2.10.tar.bz2
 # curl -l https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/MD5SUM.TXT > /tmp/test.txt
