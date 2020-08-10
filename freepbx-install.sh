@@ -96,22 +96,19 @@ systemctl start httpd.service
 # download packages
 echo -e "\n\033[5;4;47;34m download packages \033[0m\n"
 
-
-#wget -c https://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
 #wget -c https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
+#wget -c https://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
 wget -c https://github.com/meduketto/iksemel/archive/master.zip -O iksemel-master.zip
 wget -c -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.12.tar.gz
 wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-17-current.tar.gz
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
-# wget -c -O /tmp/pjproject-2.10.tar.bz2 https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/pjproject-2.10.tar.bz2
-# curl -l https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/MD5SUM.TXT > /tmp/test.txt
 
 # extracting
 #tar -zxvf dahdi-linux-complete-current.tar.gz
 #tar -zxvf libpri-current.tar.gz
 unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
-tar -zxvf asterisk-16-current.tar.gz
+tar -zxvf asterisk-17-current.tar.gz
 tar -zxvf freepbx-15.0-latest.tgz
 
 # Install iksemel
@@ -124,6 +121,7 @@ cd iksemel-master
 make
 make install
 cd ..
+
 # install dahdi
 #echo -e "\n\033[5;4;47;34m install dahdi \033[0m\n"
 
@@ -133,6 +131,7 @@ cd ..
 #make install
 #make config
 #cd ..
+
 # Building and Installing LibPRI
 #echo -e "\n\033[5;4;47;34m Building and Installing LibPRI \033[0m\n"
 
@@ -141,6 +140,7 @@ cd ..
 #make
 #make install
 #cd ..
+
 # Compile and Install jansson
 echo -e "\n\033[5;4;47;34m Compile and Install jansson \033[0m\n"
 
@@ -151,6 +151,7 @@ autoreconf -i
 make
 make install
 cd ..
+
 # Configuring Asterisk
 echo -e "\n\033[5;4;47;34m Configuring Asterisk \033[0m\n"
 
@@ -204,6 +205,7 @@ cd freepbx
 ./start_asterisk start
 ./install -n
 cd ..
+
 #; systemd startup script for FreePBX
 echo -e "\n\033[5;4;47;34m Systemd startup script for FreePBX \033[0m\n"
 

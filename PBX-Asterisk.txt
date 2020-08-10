@@ -192,7 +192,19 @@ disallow=all
 allow=ulaw,alaw,g722,g729
 
 
+tcpenable=no
+transport=udp,tls
+
+Refister String:
+username:secret@sip/username
+
 Registration String:  username:password@provideraddress.com
+
+## 
+cat /etc/asterisk/sip_custom.conf
+tcpenable=yes
+transport=tcp
+
 
 ## Configure Outbound routes 
 Route Position

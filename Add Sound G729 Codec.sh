@@ -1,14 +1,17 @@
 # add Sound Codec G729
 echo -e "\n\033[5;4;47;34m  add Sound Codec G729 \033[0m\n"
 
+g729url=http://asterisk.hosting.lv/bin/codec_g729-ast160-gcc4-glibc-x86_64-core2-sse4.so
+g723url=http://asterisk.hosting.lv/bin/codec_g723-ast160-gcc4-glibc-x86_64-core2-sse4.so
+
 if [ -d /usr/lib/asterisk/modules ]; then
 cd /usr/lib/asterisk/modules/
 g729=$(ls /usr/lib/asterisk/modules/ |grep codec_g729.so |wc -l)
 g723=$(ls /usr/lib/asterisk/modules/ |grep codec_g723.so |wc -l)
 if [ $g729 == 0 -o $g723 == 0 ];
 then
-wget -c -O codec_g729.so http://asterisk.hosting.lv/bin/codec_g729-ast160-gcc4-glibc-x86_64-core2-sse4.so
-wget -c -O codec_g723.so http://asterisk.hosting.lv/bin/codec_g723-ast160-gcc4-glibc-x86_64-core2-sse4.so
+wget -c -O codec_g729.so $g729url
+wget -c -O codec_g723.so $g723url
 chmod 755 codec_g729.so
 chown asterisk:asterisk codec_g729.so
 chmod 755 codec_g723.so
