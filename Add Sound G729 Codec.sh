@@ -1,8 +1,8 @@
 # add Sound Codec G729
 echo -e "\n\033[5;4;47;34m  add Sound Codec G729 \033[0m\n"
 
-g729url=http://asterisk.hosting.lv/bin/codec_g729-ast160-gcc4-glibc-x86_64-core2-sse4.so
-g723url=http://asterisk.hosting.lv/bin/codec_g723-ast160-gcc4-glibc-x86_64-core2-sse4.so
+g729url=http://asterisk.hosting.lv/bin/codec_g729-ast170-gcc4-glibc-x86_64-core2-sse4.so
+g723url=http://asterisk.hosting.lv/bin/codec_g723-ast170-gcc4-glibc-x86_64-core2-sse4.so
 
 if [ -d /usr/lib/asterisk/modules ]; then
 cd /usr/lib/asterisk/modules/
@@ -18,7 +18,7 @@ chmod 755 codec_g723.so
 chown asterisk:asterisk codec_g723.so
 asterisk -rx "module reload codec_g729.so"
 asterisk -rx "module reload codec_g723.so"
-asterisk -rx "core show translation"
+
 echo -e "\n\033[5;4;47;34m  codec_g723 and codec_g729 is installed \033[0m\n"
 else
 echo -e "\n\033[5;4;47;34m  codec_g723 and codec_g729 already exists  \033[0m\n"
@@ -37,3 +37,5 @@ fi
 
 # Restart services
 fwconsole restart
+
+asterisk -rx "core show translation"

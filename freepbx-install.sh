@@ -1,4 +1,12 @@
 #!/bin/bash
+
+if [ $(repoquery -a --pkgnarrow=updates |wc -l)==0 ]; then
+freepbx
+else
+echo -e "\n\033[5;4;47;34m Please do "yum update -y" before running the installation \033[0m\n"
+fi
+
+freepbx() {
 # Disable selinux
 echo -e "\n\033[5;4;47;34m Disable selinux \033[0m\n"
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
@@ -8,15 +16,13 @@ setenforce 0
 # Update Your System
 echo -e "\n\033[5;4;47;34m Update Your System \033[0m\n"
 
-yum clean all
-yum -y update
-yum -y install ngrep
-yum -y install sngrep
+
 yum -y groupinstall core base "Development Tools"
 while [[ $(yum grouplist installed |grep "Development Tools"|wc -l) == "0" ]];do
 yum -y groupinstall core base "Development Tools"
 done
-
+yum -y install ngrep
+yum -y install sngrep
 
 # Add the Asterisk User
 echo -e "\n\033[5;4;47;34m  Add the Asterisk User \033[0m\n"
@@ -265,3 +271,5 @@ firewall-cmd --permanent --zone=public --add-port=5160/udp
 firewall-cmd --permanent --zone=public --add-port=6000/udp
 firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
 firewall-cmd --reload
+
+}
