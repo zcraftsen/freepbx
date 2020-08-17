@@ -1,3 +1,5 @@
+# fwconsole ma listonline
+
 No repos specified, using: [standard] from last GUI settings
 
 +----------------------+------------+----------------------------------------------+------------+
