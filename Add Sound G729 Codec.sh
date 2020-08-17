@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # add Sound Codec G729
 echo -e "\n\033[5;4;47;34m  add Sound Codec G729 \033[0m\n"
 
