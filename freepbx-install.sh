@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ $(repoquery -a --pkgnarrow=updates |wc -l)==0 ]; then
-freepbx
-else
-echo -e "\n\033[5;4;47;34m Please do "yum update -y" before running the installation \033[0m\n"
-fi
-
 freepbx() {
 # Disable selinux
 echo -e "\n\033[5;4;47;34m Disable selinux \033[0m\n"
@@ -273,3 +267,9 @@ firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
 firewall-cmd --reload
 
 }
+
+if [ $(repoquery -a --pkgnarrow=updates |wc -l)==0 ]; then
+freepbx
+else
+echo -e "\n\033[5;4;47;34m Please do "yum update -y" before running the installation \033[0m\n"
+fi

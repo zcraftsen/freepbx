@@ -197,7 +197,6 @@ transport=udp,tls
 
 Refister String:
 username:secret@sip/username
-
 Registration String:  username:password@provideraddress.com
 
 ## 
