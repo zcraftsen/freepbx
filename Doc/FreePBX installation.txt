@@ -122,7 +122,14 @@ make samples
 ## generate logfiles
 make install-logrotate
 ldconfig
-update-rc.d -f asterisk remov
+update-rc.d -f asterisk remove
+
+## Cached Data
+# The ./configure command caches certain data to speed things up if it's invoked multiple times. To clear all the cached data, you can use the following command to completely clear out any cached data from the Asterisk build system.
+
+make distclean
+
+
 
 #; Set Asterisk ownership permissions.
 
