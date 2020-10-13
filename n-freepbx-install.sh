@@ -9,8 +9,7 @@ setenforce 0
 
 # Update Your System
 echo -e "\n\033[5;4;47;34m Update Your System \033[0m\n"
-
-
+{
 yum -y groupinstall core base "Development Tools"
 while [[ $(yum grouplist installed |grep "Development Tools"|wc -l) == "0" ]];do
 yum -y groupinstall core base "Development Tools"
@@ -18,6 +17,7 @@ done
 yum -y install ngrep
 yum -y install sngrep
 
+} >> install_err.log 2>&1
 # Add the Asterisk User
 echo -e "\n\033[5;4;47;34m  Add the Asterisk User \033[0m\n"
 
@@ -25,7 +25,7 @@ adduser asterisk -m -c "Asterisk User"
 
 # Install Additional Required Dependencies
 echo -e "\n\033[5;4;47;34m  Install Additional Required Dependencies \033[0m\n"
-
+{
 depend_pkg="lynx tftp-server unixODBC mysql-connector-odbc mariadb-server mariadb
   httpd ncurses-devel sendmail sendmail-cf sox newt-devel libxml2-devel libtiff-devel
   audiofile-devel gtk2-devel subversion kernel-devel git crontabs cronie
@@ -43,9 +43,12 @@ fi
 try=$((try-1))
 done
 
+} >> install_err.log 2>&1
+
+
 # Install php
 echo -e "\n\033[5;4;47;34m Install php \033[0m\n"
-
+{
 yum remove -y php*
 php_pkg="php72w php72w-cli php72w-common php72w-pdo php72w-mysql php72w-mbstring
  php72w-pear php72w-process php72w-xml php72w-opcache php72w-ldap php72w-intl php72w-soap"
@@ -61,13 +64,19 @@ fi
 try=$((try-1))
 done
 
+} >> install_err.log 2>&1
+
+
 # Install nodejs
 echo -e "\n\033[5;4;47;34m Install nodejs \033[0m\n"
-
+{
 yum install -y nodejs
 while [[ $(yum list installed nodejs |grep nodejs|wc -l) == "0" ]];do
 yum install -y nodejs
 done
+
+} >> install_err.log 2>&1
+
 
 # Enable and Start MariaDB
 systemctl enable mariadb.service
@@ -76,7 +85,7 @@ systemctl start mariadb
 # initial database
 #; mysql_secure_installation --use-default
 echo -e "\n\033[5;4;47;34m initial database \033[0m\n"
-
+{
 mysql -u root <<EOF
 UPDATE mysql.user SET authentication_string=PASSWORD('') WHERE User='root';
 DELETE FROM mysql.user WHERE User='';
@@ -90,6 +99,9 @@ EOF
 systemctl enable httpd.service
 systemctl start httpd.service
 
+} >> install_err.log 2>&1
+
+
 # Install Legacy Pear requirements
 #pear install Console_Getopt
 
@@ -99,6 +111,7 @@ echo -e "\n\033[5;4;47;34m downloading packages \033[0m\n"
 #pkgs="iksemel-master.zip jansson.tar.gz asterisk-17-current.tar.gz freepbx-15.0-latest.tgz"
 #wget -c https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
 #wget -c https://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
+{
 if  [ ! -e "iksemel-master.zip" ]; then
 wget -c https://github.com/meduketto/iksemel/archive/master.zip -O iksemel-master.zip
 fi
@@ -112,7 +125,6 @@ if [ ! -e "freepbx-15.0-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
 fi
 
-
 # extracting
 #tar -zxvf dahdi-linux-complete-current.tar.gz
 #tar -zxvf libpri-current.tar.gz
@@ -121,6 +133,8 @@ unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
 tar -zxvf asterisk-17-current.tar.gz
 tar -zxvf freepbx-15.0-latest.tgz
+
+} >> install_err.log 2>&1
 
 # Install iksemel
 echo -e "\n\033[5;4;47;34m Install iksemel \033[0m\n"
