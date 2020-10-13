@@ -175,7 +175,7 @@ rm -f asterisk-*-current.tar.gz
 cd asterisk-*
 contrib/scripts/get_mp3_source.sh
 contrib/scripts/install_prereq install
-./configure --with-pjproject-bundled --with-jansson-bundled  --with-iksemel --libdir=/usr/lib64
+./configure --with-pjproject-bundled --with-jansson-bundled  --with-iksemel --libdir=/usr/lib64 --with-crypto --with-ssl=ssl --with-srtp
 make menuselect.makeopts
 menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
 ## turn on 'format_mp3' and res_snmp module from Resource Modules. 
@@ -208,7 +208,7 @@ echo -e "\n\033[5;4;47;34m Some settings for Apache \033[0m\n"
 sed -i 's/\(^upload_max_filesize = \).*/\120M/' /etc/php.ini
 sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/httpd/conf/httpd.conf
 sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
-systemctl restart httpd.service
+
 
 # Install and Configure FreePBX
 echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
@@ -253,11 +253,13 @@ systemctl status -l asterisk.service
 # Security Warning
 fwconsole ma refreshsignatures
 
-# Upgrade 
-fwconsole ma downloadinstall asteriskinfo
-fwconsole ma downloadinstall certman
-fwconsole ma upgradeall
+# Restart Http
+systemctl restart httpd.service
 
+# Upgrade 
+#fwconsole ma downloadinstall asteriskinfo
+#fwconsole ma downloadinstall certman
+#fwconsole ma upgradeall
 
 # set permissions
 fwconsole chown
