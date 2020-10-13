@@ -286,15 +286,16 @@ firewall-cmd --permanent --zone=public --add-port=6000/udp
 firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
 firewall-cmd --reload
 
-}
->> install_err.log 2>&1
+} > install_err.log 2>&1
 
 if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
 else
 echo -e "\n\033[5;4;47;34m Please do "yum update -y" before running the installation \033[0m\n"
 echo -e "\n\033[5;4;47;34m Running yum update \033[0m\n"
+yum clean all
 yum update -y
 echo -e "\n\033[5;4;47;34m System Rebooting, Please wait...\033[0m\n"
+sleep 5
 Reboot
 fi
