@@ -257,8 +257,8 @@ fwconsole ma refreshsignatures
 systemctl restart httpd.service
 
 # Upgrade 
-#fwconsole ma downloadinstall asteriskinfo
-#fwconsole ma downloadinstall certman
+fwconsole ma downloadinstall asteriskinfo
+fwconsole ma downloadinstall certman
 #fwconsole ma upgradeall
 
 # set permissions
