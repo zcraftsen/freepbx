@@ -286,7 +286,7 @@ firewall-cmd --reload
 }
 >> install_err.log 2>&1
 
-if [ $(repoquery -a --pkgnarrow=updates |wc -l)==0 ]; then
+if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
 else
 echo -e "\n\033[5;4;47;34m Please do "yum update -y" before running the installation \033[0m\n"
