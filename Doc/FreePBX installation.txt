@@ -277,6 +277,17 @@ systemctl restart xinetd
 firewall-cmd --permanent --zone=public --add-port=69/udp
 firewall-cmd --reload
 
+
+
+
+
+
+
+
+
+
+
+
 ############## END ############################
 
 ## Web UI configuration for following objects:

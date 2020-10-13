@@ -254,9 +254,10 @@ systemctl status -l asterisk.service
 fwconsole ma refreshsignatures
 
 # Upgrade 
+fwconsole ma downloadinstall asteriskinfo
+fwconsole ma downloadinstall certman
 fwconsole ma upgradeall
-fwconsole ma download certman
-fwconsole ma install certman
+
 
 # set permissions
 fwconsole chown
