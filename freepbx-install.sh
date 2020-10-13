@@ -10,7 +10,6 @@ setenforce 0
 # Update Your System
 echo -e "\n\033[5;4;47;34m Update Your System \033[0m\n"
 
-
 yum -y groupinstall core base "Development Tools"
 while [[ $(yum grouplist installed |grep "Development Tools"|wc -l) == "0" ]];do
 yum -y groupinstall core base "Development Tools"
@@ -43,6 +42,7 @@ fi
 try=$((try-1))
 done
 
+
 # Install php
 echo -e "\n\033[5;4;47;34m Install php \033[0m\n"
 
@@ -61,6 +61,7 @@ fi
 try=$((try-1))
 done
 
+
 # Install nodejs
 echo -e "\n\033[5;4;47;34m Install nodejs \033[0m\n"
 
@@ -68,6 +69,7 @@ yum install -y nodejs
 while [[ $(yum list installed nodejs |grep nodejs|wc -l) == "0" ]];do
 yum install -y nodejs
 done
+
 
 # Enable and Start MariaDB
 systemctl enable mariadb.service
@@ -90,26 +92,39 @@ EOF
 systemctl enable httpd.service
 systemctl start httpd.service
 
+
 # Install Legacy Pear requirements
 #pear install Console_Getopt
 
-# download packages
-echo -e "\n\033[5;4;47;34m download packages \033[0m\n"
+# downloading packages
+echo -e "\n\033[5;4;47;34m downloading packages \033[0m\n"
 
+#pkgs="iksemel-master.zip jansson.tar.gz asterisk-17-current.tar.gz freepbx-15.0-latest.tgz"
 #wget -c https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
 #wget -c https://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
+
+if  [ ! -e "iksemel-master.zip" ]; then
 wget -c https://github.com/meduketto/iksemel/archive/master.zip -O iksemel-master.zip
-wget -c -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.12.tar.gz
+fi
+if [ ! -e "jansson.tar.gz" ]; then
+wget -c https://github.com/akheron/jansson/archive/v2.12.tar.gz -O jansson.tar.gz
+fi
+if [ ! -e "asterisk-17-current.tar.gz" ]; then
 wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-17-current.tar.gz
+fi
+if [ ! -e "freepbx-15.0-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
+fi
 
 # extracting
 #tar -zxvf dahdi-linux-complete-current.tar.gz
 #tar -zxvf libpri-current.tar.gz
+
 unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
 tar -zxvf asterisk-17-current.tar.gz
 tar -zxvf freepbx-15.0-latest.tgz
+
 
 # Install iksemel
 echo -e "\n\033[5;4;47;34m Install iksemel \033[0m\n"
@@ -121,6 +136,7 @@ cd iksemel-master
 make
 make install
 cd ..
+
 
 # install dahdi
 #echo -e "\n\033[5;4;47;34m install dahdi \033[0m\n"
@@ -159,7 +175,7 @@ rm -f asterisk-*-current.tar.gz
 cd asterisk-*
 contrib/scripts/get_mp3_source.sh
 contrib/scripts/install_prereq install
-./configure --with-pjproject-bundled --with-jansson-bundled  --with-iksemel
+./configure --with-pjproject-bundled --with-jansson-bundled  --with-iksemel --libdir=/usr/lib64 --with-crypto --with-ssl=ssl --with-srtp
 make menuselect.makeopts
 menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
 ## turn on 'format_mp3' and res_snmp module from Resource Modules. 
@@ -184,7 +200,7 @@ chown asterisk. /var/run/asterisk
 chown -R asterisk. /etc/asterisk
 chown -R asterisk. /var/{lib,log,spool}/asterisk
 chown -R asterisk. /var/spool/mqueue
-chown -R asterisk. /usr/{lib,lib64}/asterisk
+chown -R asterisk. /usr/lib64/asterisk
 chown -R asterisk. /var/www/
 
 ## A few small modifications to Apache.
@@ -192,7 +208,7 @@ echo -e "\n\033[5;4;47;34m Some settings for Apache \033[0m\n"
 sed -i 's/\(^upload_max_filesize = \).*/\120M/' /etc/php.ini
 sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/httpd/conf/httpd.conf
 sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
-systemctl restart httpd.service
+
 
 # Install and Configure FreePBX
 echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
@@ -200,11 +216,12 @@ echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
 rm -f freepbx-15.0-latest.tgz
 touch /etc/asterisk/{modules,cdr}.conf
 cd freepbx
-#sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
-#sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
+sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
+sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
 ./start_asterisk start
 ./install -n
 cd ..
+
 
 #; systemd startup script for FreePBX
 echo -e "\n\033[5;4;47;34m Systemd startup script for FreePBX \033[0m\n"
@@ -236,10 +253,13 @@ systemctl status -l asterisk.service
 # Security Warning
 fwconsole ma refreshsignatures
 
+# Restart Http
+systemctl restart httpd.service
+
 # Upgrade 
+fwconsole ma downloadinstall asteriskinfo
+fwconsole ma downloadinstall certman
 fwconsole ma upgradeall
-fwconsole ma download certman
-fwconsole ma install certman
 
 # set permissions
 fwconsole chown
@@ -268,8 +288,15 @@ firewall-cmd --reload
 
 }
 
-if [ $(repoquery -a --pkgnarrow=updates |wc -l)==0 ]; then
+if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
 else
 echo -e "\n\033[5;4;47;34m Please do "yum update -y" before running the installation \033[0m\n"
+echo -e "\n\033[5;4;47;34m Running yum update \033[0m\n"
+yum clean all
+sleep 3
+yum update -y
+echo -e "\n\033[5;4;47;34m System Rebooting, Please wait...\033[0m\n"
+sleep 5
+reboot
 fi
