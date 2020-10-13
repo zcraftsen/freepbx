@@ -298,5 +298,5 @@ sleep 3
 yum update -y
 echo -e "\n\033[5;4;47;34m System Rebooting, Please wait...\033[0m\n"
 sleep 5
-Reboot
+reboot
 fi
