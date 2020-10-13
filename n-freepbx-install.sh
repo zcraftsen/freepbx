@@ -286,7 +286,7 @@ firewall-cmd --permanent --zone=public --add-port=6000/udp
 firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
 firewall-cmd --reload
 
-} > install_err.log 2>&1
+}
 
 if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
