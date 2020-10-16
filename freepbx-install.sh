@@ -173,6 +173,7 @@ echo -e "\n\033[5;4;47;34m Configuring Asterisk \033[0m\n"
 
 rm -f asterisk-*-current.tar.gz
 cd asterisk-*
+make distclean
 contrib/scripts/get_mp3_source.sh
 contrib/scripts/install_prereq install
 ./configure --with-pjproject-bundled --with-jansson-bundled --with-iksemel --libdir=/usr/lib64 --with-crypto --with-ssl=ssl --with-srtp
