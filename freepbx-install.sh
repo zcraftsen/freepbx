@@ -175,7 +175,7 @@ rm -f asterisk-*-current.tar.gz
 cd asterisk-*
 contrib/scripts/get_mp3_source.sh
 contrib/scripts/install_prereq install
-./configure --with-pjproject-bundled --with-jansson-bundled  --with-iksemel --libdir=/usr/lib64 --with-crypto --with-ssl=ssl --with-srtp
+./configure --with-pjproject-bundled --with-jansson-bundled --with-iksemel --libdir=/usr/lib64 --with-crypto --with-ssl=ssl --with-srtp
 make menuselect.makeopts
 menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
 ## turn on 'format_mp3' and res_snmp module from Resource Modules. 
