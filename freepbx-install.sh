@@ -305,11 +305,11 @@ fi
 
 if [ -f /opt/pbis/bin/domainjoin-cli ];
 then
-echo -e "\n\033[5;4;47;34m Please confirm your Hostname is $(hostname) correct or NOT, then type your a.account to join to tls.ad  \033[0m\n"
 if (test $(/opt/pbis/bin/find-objects --group gu.itops.adm |grep -i "error" |wc -l) -eq 0) ; 
 then
 echo -e "\n\033[5;4;47;34m $(hostname) already joined to tls.ad  \033[0m\n"
 else
+echo -e "\n\033[5;4;47;34m Please confirm your Hostname is $(hostname) correct or NOT, then type your a.account to join to tls.ad  \033[0m\n"
 /opt/pbis/bin/domainjoin-cli join tls.ad
 /opt/pbis/bin/config UserDomainPrefix TLS
 /opt/pbis/bin/config AssumeDefaultDomain true
