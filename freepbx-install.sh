@@ -46,7 +46,7 @@ done
 # Install php
 echo -e "\n\033[5;4;47;34m Install php \033[0m\n"
 
-yum remove -y php*
+# yum remove -y php*
 php_pkg="php72w php72w-cli php72w-common php72w-pdo php72w-mysql php72w-mbstring
  php72w-pear php72w-process php72w-xml php72w-opcache php72w-ldap php72w-intl php72w-soap"
 
@@ -176,7 +176,7 @@ cd asterisk-*
 make distclean
 contrib/scripts/get_mp3_source.sh
 contrib/scripts/install_prereq install
-./configure --with-pjproject-bundled --with-jansson-bundled --with-iksemel --libdir=/usr/lib64 --with-crypto --with-ssl=ssl --with-srtp
+./configure --with-pjproject-bundled --with-jansson-bundled --with-iksemel --libdir=/usr/lib64
 make menuselect.makeopts
 menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
 ## turn on 'format_mp3' and res_snmp module from Resource Modules. 
@@ -289,20 +289,6 @@ firewall-cmd --reload
 
 }
 
-if [ -f /opt/pbis/bin/domainjoin-cli ];
-then
-echo -e "\n\033[5;4;47;34m Please confirm your Hostname is $(hostname) or NOT, then type your a.account to join to tls.ad  \033[0m\n"
-/opt/pbis/bin/domainjoin-cli join tls.ad
-/opt/pbis/bin/config UserDomainPrefix TLS
-/opt/pbis/bin/config AssumeDefaultDomain true
-/opt/pbis/bin/config LoginShellTemplate /bin/bash
-/opt/pbis/bin/config HomeDirTemplate %H/%U
-/opt/pbis/bin/config RequireMembershipOf "TLS\\gu.itops.adm"
-else
-echo "Please install pbis-open and join to tls.ad again."
-fi
-
-
 if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
 else
@@ -311,7 +297,26 @@ echo -e "\n\033[5;4;47;34m Running yum update \033[0m\n"
 yum clean all
 sleep 3
 yum update -y
-echo -e "\n\033[5;4;47;34m System Rebooting, Please wait...\033[0m\n"
+echo -e "\n\033[5;4;47;34m System Rebooting, Please wait and run the script again...\033[0m\n"
 sleep 5
 reboot
+fi
+
+
+if [ -f /opt/pbis/bin/domainjoin-cli ];
+then
+echo -e "\n\033[5;4;47;34m Please confirm your Hostname is $(hostname) correct or NOT, then type your a.account to join to tls.ad  \033[0m\n"
+if (test $(/opt/pbis/bin/find-objects --group gu.itops.adm |grep -i "error" |wc -l) -eq 0) ; 
+then
+echo -e "\n\033[5;4;47;34m $(hostname) already joined to tls.ad  \033[0m\n"
+else
+/opt/pbis/bin/domainjoin-cli join tls.ad
+/opt/pbis/bin/config UserDomainPrefix TLS
+/opt/pbis/bin/config AssumeDefaultDomain true
+/opt/pbis/bin/config LoginShellTemplate /bin/bash
+/opt/pbis/bin/config HomeDirTemplate %H/%U
+/opt/pbis/bin/config RequireMembershipOf "TLS\\gu.itops.adm"
+fi
+else
+echo "Please install pbis-open and join to tls.ad again."
 fi
