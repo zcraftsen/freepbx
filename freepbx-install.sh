@@ -289,6 +289,20 @@ firewall-cmd --reload
 
 }
 
+if [ -f /opt/pbis/bin/domainjoin-cli ];
+then
+echo -e "\n\033[5;4;47;34m Please confirm your Hostname is $(hostname) or NOT, then type your a.account to join to tls.ad  \033[0m\n"
+/opt/pbis/bin/domainjoin-cli join tls.ad
+/opt/pbis/bin/config UserDomainPrefix TLS
+/opt/pbis/bin/config AssumeDefaultDomain true
+/opt/pbis/bin/config LoginShellTemplate /bin/bash
+/opt/pbis/bin/config HomeDirTemplate %H/%U
+/opt/pbis/bin/config RequireMembershipOf "TLS\\gu.itops.adm"
+else
+echo "Please install pbis-open and join to tls.ad again."
+fi
+
+
 if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
 else

@@ -128,6 +128,50 @@ context=from-trunk
 Registration
 Register String: <<username from gw>>:<<password>>@<<gwipaddress>>
 
+https://wiki.freepbx.org/display/FPG/Trunk+Sample+Configurations
+
+
+Trunk Name:  ProviderA
+
+PEER Details:
+
+username=username
+fromuser=username
+secret=password
+host=provideraddress.com
+fromdomain=provideraddress.com
+type=friend
+context=from-trunk
+insecure=port,invite
+trustrpid=yes
+sendrpid=yes
+directmedia=no
+qualify=yes
+keepalive=45
+nat=yes
+dtmfmode=rfc2833
+disallow=all
+allow=ulaw
+allow=alaw
+
+Registration String:  username:password@provideraddress.com
+
+Notes:
+
+Replace "ProviderA" with whatever name you want to use for the provider.
+Replace "YOURCALLERIDHERE" with the Caller ID to be used on outgoing calls on this Trunk.  Note that most of the time, this Caller ID will not be used, as Caller IDs set in the Outbound Routes module and the Extensions Module usually take priority (unless the CID Options field is set to Force Trunk Caller ID).
+Replace "username" with the username assigned by your ITSP.
+Replace "password" with the password assigned by your ITSP.
+Replace provideraddress.com with the IP address or domain name supplied by your ITSP.
+If the Caller-ID on incoming calls come in with a + at the beginning and you don't want them to, change "from-trunk" to "from-pstn-e164-us".
+If your inbound calls have no Caller ID, delete trustrpid=yes.
+If your outbound calls never have the correct Caller ID, delete the fromuser= line.
+If your outbound calls always fail, try deleting the sendrpid= line.
+If your inbound calls always fail, try changing "from-trunk" to "from-pstn-toheader"
+
+
+
+
 
 
 
@@ -161,8 +205,29 @@ auth=md5
 Registration String:  Blank.
 2.  Configure an Outbound Route on System1
 
+
+
 ## Generic Configuration for Internet Telephone Service Providers using SIP protocol:
 Trunk Name:  ProviderA
+
+
+PEER Details:
+type=peer
+directmedia=no
+host=sip.digiumcloud.net
+defaultuser=your_digium_username
+fromuser=your_digium_username
+secret=your_digium_password
+insecure=invite
+trustrpid=yes
+sendrpid=pai
+disallow=all
+allow=g722
+allow=ulaw
+allow=g729
+session-timers=refuse
+
+
 
 PEER Details:
 username=username
