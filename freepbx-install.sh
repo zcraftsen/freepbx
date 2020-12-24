@@ -270,8 +270,13 @@ fwconsole reload
 
 # add firewalld 
 echo -e "\n\033[5;4;47;34m Firewalld settings \033[0m\n"
+systemctl restart firewalld
+rm -rf  /etc/firewalld/zones/
+cp -r /usr/lib/firewalld/zones  /etc/firewalld/zones
+firewall-cmd --reload
+echo "Default Firewalld has been applied"
 
-firewall-cmd --permanent --zone=public --add-service={http,https}
+firewall-cmd --permanent --zone=public --add-service={ssh,http,https}
 firewall-cmd --permanent --zone=public --add-port=5060-5061/tcp
 firewall-cmd --permanent --zone=public --add-port=5038/tcp
 firewall-cmd --permanent --zone=public --add-port=2000/tcp
@@ -286,6 +291,7 @@ firewall-cmd --permanent --zone=public --add-port=5160/udp
 firewall-cmd --permanent --zone=public --add-port=6000/udp
 firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
 firewall-cmd --reload
+firewall-cmd --zone=public --list-all
 
 }
 
@@ -302,14 +308,13 @@ sleep 5
 reboot
 fi
 
-
 if [ -f /opt/pbis/bin/domainjoin-cli ];
 then
 if (test $(/opt/pbis/bin/find-objects --group gu.itops.adm |grep -i "error" |wc -l) -eq 0) ; 
 then
-echo -e "\n\033[5;4;47;34m $(hostname) already joined to tls.ad  \033[0m\n"
+echo -e "\n\033[5;4;47;34m $(hostname) has been already joined to tls.ad  \033[0m\n"
 else
-echo -e "\n\033[5;4;47;34m Please confirm your Hostname is $(hostname) correct or NOT, then type your a.account to join to tls.ad  \033[0m\n"
+echo -e "\n\033[5;4;47;34m Please confirm your Hostname $(hostname) is correct or NOT, then type your a.account to join to tls.ad  \033[0m\n"
 /opt/pbis/bin/domainjoin-cli join tls.ad
 /opt/pbis/bin/config UserDomainPrefix TLS
 /opt/pbis/bin/config AssumeDefaultDomain true
