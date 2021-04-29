@@ -110,7 +110,7 @@ if [ ! -e "jansson.tar.gz" ]; then
 wget -c https://github.com/akheron/jansson/archive/v2.12.tar.gz -O jansson.tar.gz
 fi
 if [ ! -e "asterisk-17-current.tar.gz" ]; then
-wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz
+wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-17-current.tar.gz
 fi
 if [ ! -e "freepbx-15.0-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
@@ -122,7 +122,7 @@ fi
 
 unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
-tar -zxvf asterisk-18-current.tar.gz
+tar -zxvf asterisk-17-current.tar.gz
 tar -zxvf freepbx-15.0-latest.tgz
 
 
@@ -180,7 +180,7 @@ max_tries=2
 try=$max_tries
 result="error"
 while (( try > 0 )) && [[ "$result" == 'error' ]]; do
-contrib/scripts/install_prereq install && result='ok' || result='error'
+contrib/scripts/install_prereq install && contrib/scripts/install_prereq install-unpackaged && result='ok' || result='error'
 if [[ "$result" == 'error' ]]; then
 yum clean all
 fi
@@ -203,7 +203,6 @@ make config
 #make samples
 ## generate logfiles
 make install-logrotate
-ldconfig
 cd ..
 
 # Set Asterisk ownership permissions.
