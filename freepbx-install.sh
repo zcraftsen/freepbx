@@ -223,7 +223,8 @@ echo -e "\n\033[5;4;47;34m Some settings for Apache \033[0m\n"
 sed -i 's/\(^upload_max_filesize = \).*/\120M/' /etc/php.ini
 sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/httpd/conf/httpd.conf
 sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
-
+# Restart Http
+systemctl restart httpd.service
 
 # Install and Configure FreePBX
 echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
@@ -267,9 +268,6 @@ systemctl status -l asterisk.service
 
 # Security Warning
 fwconsole ma refreshsignatures
-
-# Restart Http
-systemctl restart httpd.service
 
 # Upgrade 
 fwconsole ma downloadinstall asteriskinfo
