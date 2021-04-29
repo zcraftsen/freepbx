@@ -288,6 +288,7 @@ firewall-cmd --reload
 echo "Default Firewalld has been applied"
 
 firewall-cmd --permanent --zone=public --add-service={ssh,http,https}
+firewall-cmd --permanent --zone=public --add-port=13333/tcp
 firewall-cmd --permanent --zone=public --add-port=5060-5061/tcp
 firewall-cmd --permanent --zone=public --add-port=5038/tcp
 firewall-cmd --permanent --zone=public --add-port=2000/tcp
