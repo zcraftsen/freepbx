@@ -203,6 +203,7 @@ make config
 #make samples
 ## generate logfiles
 make install-logrotate
+ldconfig
 cd ..
 
 # Set Asterisk ownership permissions.
@@ -231,7 +232,7 @@ touch /etc/asterisk/{modules,cdr}.conf
 cd freepbx
 sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
 sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
-#./start_asterisk start
+./start_asterisk start
 ./install -n
 cd ..
 
