@@ -200,7 +200,7 @@ make
 make install
 make config
 ## Installing Sample Files
-#make samples
+make samples
 ## generate logfiles
 make install-logrotate
 ldconfig
