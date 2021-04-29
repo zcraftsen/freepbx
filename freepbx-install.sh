@@ -110,7 +110,7 @@ if [ ! -e "jansson.tar.gz" ]; then
 wget -c https://github.com/akheron/jansson/archive/v2.12.tar.gz -O jansson.tar.gz
 fi
 if [ ! -e "asterisk-17-current.tar.gz" ]; then
-wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-17-current.tar.gz
+wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz
 fi
 if [ ! -e "freepbx-15.0-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
@@ -122,7 +122,7 @@ fi
 
 unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
-tar -zxvf asterisk-17-current.tar.gz
+tar -zxvf asterisk-18-current.tar.gz
 tar -zxvf freepbx-15.0-latest.tgz
 
 
@@ -175,7 +175,18 @@ rm -f asterisk-*-current.tar.gz
 cd asterisk-*
 make distclean
 contrib/scripts/get_mp3_source.sh
-contrib/scripts/install_prereq install
+
+max_tries=2
+try=$max_tries
+result="error"
+while (( try > 0 )) && [[ "$result" == 'error' ]]; do
+contrib/scripts/install_prereq install && result='ok' || result='error'
+if [[ "$result" == 'error' ]]; then
+yum clean all
+fi
+try=$((try-1))
+done
+
 ./configure --with-pjproject-bundled --with-jansson-bundled --with-iksemel --libdir=/usr/lib64
 make menuselect.makeopts
 menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
@@ -214,7 +225,7 @@ sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
 # Install and Configure FreePBX
 echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
 
-rm -f freepbx-15.0-latest.tgz
+rm -f freepbx-*-latest.tgz
 touch /etc/asterisk/{modules,cdr}.conf
 cd freepbx
 sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
