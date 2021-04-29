@@ -212,7 +212,9 @@ chown -R asterisk. /etc/asterisk
 chown -R asterisk. /var/{lib,log,spool}/asterisk
 chown -R asterisk. /var/spool/mqueue
 chown -R asterisk. /usr/lib64/asterisk
+chown asterisk. /usr/sbin/asterisk
 chown -R asterisk. /var/www/
+
 
 ## A few small modifications to Apache.
 echo -e "\n\033[5;4;47;34m Some settings for Apache \033[0m\n"
@@ -229,7 +231,7 @@ touch /etc/asterisk/{modules,cdr}.conf
 cd freepbx
 sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
 sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
-./start_asterisk start
+#./start_asterisk start
 ./install -n
 cd ..
 
