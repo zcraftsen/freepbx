@@ -2,7 +2,7 @@
 
 freepbx() {
 # Disable selinux
-echo -e "\n\033[5;4;47;34m Disable selinux \033[0m\n"
+echo -e "\n\033[5;4;47;34m configure selinux \033[0m\n"
 sed -i 's/\(^SELINUX=\).*/\SELINUX=permissive/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=permissive/' /etc/selinux/config
 setenforce 0
@@ -110,7 +110,7 @@ if [ ! -e "jansson.tar.gz" ]; then
 wget -c https://github.com/akheron/jansson/archive/v2.12.tar.gz -O jansson.tar.gz
 fi
 if [ ! -e "asterisk-17-current.tar.gz" ]; then
-wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-17-current.tar.gz
+wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz
 fi
 if [ ! -e "freepbx-15.0-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
@@ -122,7 +122,7 @@ fi
 
 unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
-tar -zxvf asterisk-17-current.tar.gz
+tar -zxvf asterisk-18-current.tar.gz
 tar -zxvf freepbx-15.0-latest.tgz
 
 
