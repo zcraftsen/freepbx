@@ -107,13 +107,13 @@ if  [ ! -e "iksemel-master.zip" ]; then
 wget -c https://github.com/meduketto/iksemel/archive/master.zip -O iksemel-master.zip
 fi
 if [ ! -e "jansson.tar.gz" ]; then
-wget -c https://github.com/akheron/jansson/archive/v2.12.tar.gz -O jansson.tar.gz
+wget -c https://github.com/akheron/jansson/archive/refs/tags/v2.13.1.tar.gz -O jansson.tar.gz
 fi
 if [ ! -e "asterisk-17-current.tar.gz" ]; then
-wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz
+wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz -O asterisk-current.tar.gz
 fi
 if [ ! -e "freepbx-15.0-latest.tgz" ]; then
-wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz
+wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz -O freepbx-latest.tgz
 fi
 
 # extracting
@@ -122,8 +122,8 @@ fi
 
 unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
-tar -zxvf asterisk-18-current.tar.gz
-tar -zxvf freepbx-15.0-latest.tgz
+tar -zxvf asterisk-current.tar.gz
+tar -zxvf freepbx-latest.tgz
 
 
 # Install iksemel
@@ -171,7 +171,7 @@ cd ..
 # Configuring Asterisk
 echo -e "\n\033[5;4;47;34m Configuring Asterisk \033[0m\n"
 
-rm -f asterisk-*-current.tar.gz
+rm -f asterisk-current.tar.gz
 cd asterisk-*
 make distclean
 contrib/scripts/get_mp3_source.sh
@@ -229,7 +229,7 @@ systemctl restart httpd.service
 # Install and Configure FreePBX
 echo -e "\n\033[5;4;47;34m Install and Configure FreePBX  \033[0m\n"
 
-rm -f freepbx-*-latest.tgz
+rm -f freepbx-latest.tgz
 touch /etc/asterisk/{modules,cdr}.conf
 cd freepbx
 sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
