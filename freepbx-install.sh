@@ -2,7 +2,7 @@
 
 freepbx() {
 # Disable selinux
-echo -e "\n\033[5;4;47;34m configuring selinux \033[0m\n"
+echo -e "\n\033[5;4;47;34m Configuring selinux \033[0m\n"
 sed -i 's/\(^SELINUX=\).*/\SELINUX=permissive/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=permissive/' /etc/selinux/config
 setenforce 0
