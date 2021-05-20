@@ -270,6 +270,7 @@ systemctl status -l asterisk.service
 fwconsole ma refreshsignatures
 
 # Upgrade 
+fwconsole ma downloadinstall pm2
 fwconsole ma downloadinstall asteriskinfo
 fwconsole ma downloadinstall certman
 fwconsole ma upgradeall
