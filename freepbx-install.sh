@@ -272,6 +272,7 @@ fwconsole ma refreshsignatures
 # Upgrade 
 fwconsole ma downloadinstall pm2
 fwconsole ma downloadinstall asteriskinfo
+fwconsole ma downloadinstall logfiles
 fwconsole ma downloadinstall certman
 fwconsole ma upgradeall
 
