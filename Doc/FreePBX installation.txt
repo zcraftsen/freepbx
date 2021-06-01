@@ -247,7 +247,11 @@ Ctrl D and hit enter
 
 ####### END ###############
 
+
+
 ### TFTP
+
+
 #; If you plan to use hardware SIP phones you will probably want to set up TFTP.
 yum -y install tftp-server
 cat > /etc/xinetd.d/tftp << EOF
@@ -283,11 +287,6 @@ firewall-cmd --reload
 
 
 
-
-
-
-
-
 ############## END ############################
 
 ## Web UI configuration for following objects:
@@ -303,10 +302,14 @@ Applications > Conferences <!-- only those used for OPS purpose -->
 Applications > IVR <!-- only those used for OPS purpose -->
 
 
+
+
 ## enable res_snmp module
+
 asterisk -rx "module show like snmp"
 
 ;; Enable agentX in snmp.
+
 echo '
 #Enable AgentX support
 master agentx
@@ -330,6 +333,7 @@ sysObjectID .1.3.6.1.4.1.22736.1
 ---
 
 vi  /etc/asterisk/res_snmp.conf
+
 [general]
 ; We run as a subagent per default – to run as a full agent
 ; we must run as root (to be able to bind to port 161)
@@ -386,6 +390,8 @@ asterisk.conf
 modules.conf
 extensions.conf
 sip.conf or pjsip.conf
+
+
 
 ### Generated from FreePBX
 ;; All sip devices added
