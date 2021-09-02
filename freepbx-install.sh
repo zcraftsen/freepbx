@@ -116,6 +116,10 @@ if [ ! -e "freepbx-15.0-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz -O freepbx-latest.tgz
 fi
 
+pushd /tmp
+wget -c --no-check-certificate https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/pjproject-2.10.tar.bz2
+wget -c --no-check-certificate https://raw.githubusercontent.com/asterisk/third-party/master/jansson/2.12/jansson-2.12.tar.bz2
+popd
 # extracting
 #tar -zxvf dahdi-linux-complete-current.tar.gz
 #tar -zxvf libpri-current.tar.gz
@@ -235,6 +239,7 @@ cd freepbx
 sed -i '/AST_USER/s/^#//' /etc/sysconfig/asterisk
 sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
 ./start_asterisk start
+sleep 10
 ./install -n
 cd ..
 
