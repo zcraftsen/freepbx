@@ -1,4 +1,4 @@
-﻿Installing FreePBX 14 on CentOS 7
+Installing FreePBX 14 on CentOS 7
 
 #; Disable selinux
 #; In /etc/sysconfig/selinux , change the following lines:
@@ -147,6 +147,7 @@ sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/httpd/conf/httpd.conf
 sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
 
 systemctl restart httpd.service
+
 
 #; Download and install FreePBX.
 cd /tmp

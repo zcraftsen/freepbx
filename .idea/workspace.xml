@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="19dcd9d1-3aaf-460d-93f4-00fcb58fe0e4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Add Sound G729 Codec.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Add Sound G729 Codec.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CC Stats guide/CC-stats-asternic-howto.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CC Stats guide/CC-stats-asternic-howto.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CC Stats guide/callcenter-stats-vn.sh" beforeDir="false" afterPath="$PROJECT_DIR$/CC Stats guide/callcenter-stats-vn.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CC Stats guide/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/CC Stats guide/footer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CC Stats guide/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/CC Stats guide/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CC Stats guide/menu-vn.php" beforeDir="false" afterPath="$PROJECT_DIR$/CC Stats guide/menu-vn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CC Stats guide/menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/CC Stats guide/menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/FreePBX installation.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/FreePBX installation.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/Freepbx modules short name.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/Freepbx modules short name.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/PBX-Asterisk.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/PBX-Asterisk.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/Postgresql-asterisk-installation.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/Postgresql-asterisk-installation.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/Sip TLS transport.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/Sip TLS transport.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/User manager.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/User manager.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/asterisk ports.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/asterisk ports.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Doc/tcpdump-sip.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/tcpdump-sip.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReadME.MD" beforeDir="false" afterPath="$PROJECT_DIR$/ReadME.MD" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/freepbx-install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/freepbx-install.sh" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2AYzAaXXUGGjlxpNEbUgUqzJJ9i" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="19dcd9d1-3aaf-460d-93f4-00fcb58fe0e4" name="Changes" comment="" />
+      <created>1655201164163</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1655201164163</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

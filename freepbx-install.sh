@@ -109,10 +109,10 @@ fi
 if [ ! -e "jansson.tar.gz" ]; then
 wget -c https://github.com/akheron/jansson/archive/refs/tags/v2.13.1.tar.gz -O jansson.tar.gz
 fi
-if [ ! -e "asterisk-17-current.tar.gz" ]; then
+if [ ! -e "asterisk-current.tar.gz" ]; then
 wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz -O asterisk-current.tar.gz
 fi
-if [ ! -e "freepbx-15.0-latest.tgz" ]; then
+if [ ! -e "freepbx-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz -O freepbx-latest.tgz
 fi
 
@@ -128,7 +128,6 @@ unzip iksemel-master.zip
 tar -zxvf jansson.tar.gz
 tar -zxvf asterisk-current.tar.gz
 tar -zxvf freepbx-latest.tgz
-
 
 # Install iksemel
 echo -e "\n\033[5;4;47;34m Install iksemel \033[0m\n"
@@ -310,6 +309,9 @@ firewall-cmd --permanent --zone=public --add-port=5067/udp
 firewall-cmd --permanent --zone=public --add-port=5160/udp
 firewall-cmd --permanent --zone=public --add-port=6000/udp
 firewall-cmd --permanent --zone=public --add-port=10000-60000/udp
+
+firewall-cmd --permanent --zone=public --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 0.0.0.0/0 -d 0.0.0.0/0 -j ACCEPT
+
 firewall-cmd --reload
 firewall-cmd --zone=public --list-all
 

@@ -163,6 +163,7 @@ Replace "YOURCALLERIDHERE" with the Caller ID to be used on outgoing calls on th
 Replace "username" with the username assigned by your ITSP.
 Replace "password" with the password assigned by your ITSP.
 Replace provideraddress.com with the IP address or domain name supplied by your ITSP.
+
 If the Caller-ID on incoming calls come in with a + at the beginning and you don't want them to, change "from-trunk" to "from-pstn-e164-us".
 If your inbound calls have no Caller ID, delete trustrpid=yes.
 If your outbound calls never have the correct Caller ID, delete the fromuser= line.
@@ -246,6 +247,7 @@ keepalive=45
 nat=no
 dtmfmode=rfc2833
 disallow=all == allow=!all,ulaw
+
 #######################################
 disallow=all
 allow=alaw&ulaw&g726
@@ -263,6 +265,19 @@ transport=udp,tls
 Refister String:
 username:secret@sip/username
 Registration String:  username:password@provideraddress.com
+
+
+We do not need anything under Incoming Settings, so just make sure they're blank.
+
+One of the most important settings in a SIP trunk, is the register string. You will find the field under Registration.
+Some SIP providers use a slightly different register string format than others. The formats go as below:
+Some, like Broadvoice, use this format: <Username>@<SIP proxy>:<Password>:<AuthID>@<SIP proxy>/<DID>
+Which translates into: <Phone number>@<SIP proxy>:<Password>:<Phone number>@<SIP proxy>/<DID>
+
+While others use this format: <Username>:<Password>@<SIP proxy>/<DID>
+Which translates into: <Phone number>:<Password>@<SIP proxy>/<DID>
+
+
 
 ## 
 cat /etc/asterisk/sip_custom.conf
