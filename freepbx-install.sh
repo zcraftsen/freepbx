@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -euo pipefail
+# escape in case problems
+# set -euo pipefail
 
 RED='\E[1;31m'      # 红
 GREEN='\E[1;32m'    # 绿
@@ -359,6 +360,7 @@ echo -e "\n\033[5;4;47;34m Running yum update \033[0m\n"
 yum clean all
 sleep 3
 yum update -y
+
 echo -e "\n\033[5;4;47;34m System Rebooting, Please wait and run the script again...\033[0m\n"
 sleep 5
 reboot
