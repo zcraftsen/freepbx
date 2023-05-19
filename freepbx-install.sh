@@ -1,5 +1,23 @@
 #!/bin/bash
 
+set -euo pipefail
+
+RED='\E[1;31m'      # 红
+GREEN='\E[1;32m'    # 绿
+YELOW='\E[1;33m'    # 黄
+BLUE='\E[1;34m'     # 蓝
+PINK='\E[1;35m'     # 粉
+RES='\E[0m'         # 清除颜色
+
+_check() {
+if [[ $? -ne 0 ]]; then
+  echo -e "${BLUE} $1 Error${RES}"
+  exit 1
+else 
+  echo -e "${YELOW} $1 Done${RES}"
+fi
+}
+
 freepbx() {
 # Disable selinux
 echo -e "\n\033[5;4;47;34m Configuring selinux \033[0m\n"
@@ -42,6 +60,7 @@ fi
 try=$((try-1))
 done
 
+_check Install_Additional_Required_Dependencies
 
 # Install php
 echo -e "\n\033[5;4;47;34m Install php \033[0m\n"
@@ -61,6 +80,7 @@ fi
 try=$((try-1))
 done
 
+_check php_install
 
 # Install nodejs
 echo -e "\n\033[5;4;47;34m Install nodejs \033[0m\n"
@@ -70,6 +90,7 @@ while [[ $(yum list installed nodejs |grep nodejs|wc -l) == "0" ]];do
 yum install -y nodejs
 done
 
+_check nodejs_install
 
 # Enable and Start MariaDB
 systemctl enable mariadb.service
@@ -88,10 +109,11 @@ DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
 FLUSH PRIVILEGES;
 EOF
 
+_check initial_database
+
 # Enable and Start Apache
 systemctl enable httpd.service
 systemctl start httpd.service
-
 
 # Install Legacy Pear requirements
 #pear install Console_Getopt
@@ -112,9 +134,12 @@ fi
 if [ ! -e "asterisk-current.tar.gz" ]; then
 wget -c https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz -O asterisk-current.tar.gz
 fi
+_check asterisk_download
+
 if [ ! -e "freepbx-latest.tgz" ]; then
 wget -c http://mirror.freepbx.org/modules/packages/freepbx/freepbx-15.0-latest.tgz -O freepbx-latest.tgz
 fi
+_check freepbx_download
 
 pushd /tmp
 wget -c --no-check-certificate https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/2.10/pjproject-2.10.tar.bz2
@@ -171,6 +196,8 @@ make
 make install
 cd ..
 
+_check install_jansson
+
 # Configuring Asterisk
 echo -e "\n\033[5;4;47;34m Configuring Asterisk \033[0m\n"
 
@@ -191,6 +218,9 @@ try=$((try-1))
 done
 
 ./configure --with-pjproject-bundled --with-jansson-bundled --with-iksemel --libdir=/usr/lib64
+
+_check install_asterisk_configure
+
 make menuselect.makeopts
 menuselect/menuselect --enable app_macro --enable format_mp3 menuselect.makeopts
 ## turn on 'format_mp3' and res_snmp module from Resource Modules. 
@@ -240,6 +270,9 @@ sed -i '/AST_GROUP/s/^#//' /etc/sysconfig/asterisk
 ./start_asterisk start
 sleep 10
 ./install -n
+
+_check install_freepbx
+
 cd ..
 
 
@@ -316,6 +349,7 @@ firewall-cmd --reload
 firewall-cmd --zone=public --list-all
 
 }
+
 
 if [ $(repoquery -a --pkgnarrow=updates |wc -l) -eq 0 ]; then
 freepbx
